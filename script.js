@@ -52,7 +52,9 @@ function startGame() {
 function createDrop() {
   // Create a new div element that will be our water drop
   const drop = document.createElement("div");
-  drop.className = "water-drop";
+  const badDrop = Math.random() < 0.2;
+
+  drop.className = badDrop ? "water-drop bad-drop" : "water-drop";
 
   // Make drops different sizes for visual variety
   const initialSize = 60;
@@ -73,11 +75,16 @@ function createDrop() {
   document.getElementById("game-container").appendChild(drop);
 
   drop.addEventListener("click", () => {
-  score++;
-  document.getElementById("score").textContent = score;
-  drop.remove();
-  });
+    if (badDrop) {
+      score--;
+    } else {
+      score++;
+    }
 
+    document.getElementById("score").textContent = score;
+    drop.remove();
+  });
+  
   // Remove drops that reach the bottom (weren't clicked)
   drop.addEventListener("animationend", () => {
     drop.remove(); // Clean up drops that weren't caught
